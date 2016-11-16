@@ -79,13 +79,27 @@ WHERE
     
     
 -- 5) znajdz uzytkownikow ktorzy oferowali rzeczy lub uslugi niezgodne z prawem
-select topics.poster, topics.subject
-from topics
-where lower(topics.subject) like '%sprz%haszysz%'
-or lower(topics.subject) like ('%sprz%kont%')
-or lower(topics.subject) like ('%sprz%koka%')
-or lower(topics.subject) like ('%sprz%amfetam%')
-or lower(topics.subject) like ('%sprz%extasy%')
-or lower(topics.subject) like ('%sprz%kradzion%');
+SELECT 
+    topics.poster as 'uzytkownik', 
+    topics.subject as 'temat'
+FROM
+    topics
+WHERE
+    LOWER(topics.subject) LIKE '%sprz%haszysz%'
+        OR LOWER(topics.subject) LIKE ('%sprz%kont%')
+        OR LOWER(topics.subject) LIKE ('%sprz%koka%')
+        OR LOWER(topics.subject) LIKE ('%sprz%amfetam%')
+        OR LOWER(topics.subject) LIKE ('%sprz%extasy%')
+        OR LOWER(topics.subject) LIKE ('%sprz%kradzion%');
+
+
 
 -- 6) z jakiej poczty korzystaja uzytkownicy forum torepublic? policz rozne serwery z ktorych korzystaja i posortuj je malejaco
+SELECT 
+    SUBSTRING(users.email FROM POSITION('@' IN users.email) + 1) as 'serwery email',
+    COUNT(users.email) as 'liczba uzytkujacych uzytkownikow'
+FROM
+    users
+GROUP BY SUBSTRING(users.email FROM POSITION('@' IN users.email) + 1)
+ORDER BY COUNT(users.email) DESC;
+
