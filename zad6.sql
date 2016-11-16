@@ -14,6 +14,7 @@ WHERE
 
 -- 2) znajdz najbardziej aktywnego uzytkownika forum torrepublic w roku 2015, 2014 i wczesniej. Sam zdefiniuj kryterium aktywnosci
 -- najbardziej aktywny uzytkownik to ten ktory w danym roku mial najwieksza ilosc postow
+-- mozna to rozbic na view po czym po zapytaniu je usuwac
 SELECT 
     postsQuantityPerEachUserInEachYear.year as 'rok',
     postsQuantityPerEachUserInEachYear.username as 'uzytkownik',
