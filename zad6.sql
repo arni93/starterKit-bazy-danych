@@ -14,7 +14,6 @@ WHERE
 
 -- 2) znajdz najbardziej aktywnego uzytkownika forum torrepublic w roku 2015, 2014 i wczesniej. Sam zdefiniuj kryterium aktywnosci
 -- najbardziej aktywny uzytkownik to ten ktory w danym roku mial najwieksza ilosc postow
-
 SELECT 
     postsQuantityPerEachUserInEachYear.year as 'rok',
     postsQuantityPerEachUserInEachYear.username as 'uzytkownik',
@@ -49,6 +48,8 @@ FROM
     GROUP BY results.year) AS maxPostPerUserInEachYear ON maxPostPerUserInEachYear.maxPostQuantity = postsQuantityPerEachUserInEachYear.postQuantity;
 
 
+
+
 -- 3) znajdz pieciu uzytkownikow, ktorych suma dlugosci wszystkich komentarzy jest najwieksza
 SELECT 
     users.username as 'uzytkownik',
@@ -63,6 +64,8 @@ GROUP BY users.id , users.username
 ORDER BY SUM(LENGTH(posts.message)) DESC
 LIMIT 5;
 
+
+
 -- 4) znajdz uzytkownika ktory nigdy nie napisal zadnego komentarza
 SELECT 
     distinct users.username as 'uzytkownik'
@@ -72,7 +75,17 @@ FROM
     posts ON users.id = posts.poster_id
 WHERE
     posts.id is null;
+    
+    
+    
 -- 5) znajdz uzytkownikow ktorzy oferowali rzeczy lub uslugi niezgodne z prawem
-
+select topics.poster, topics.subject
+from topics
+where lower(topics.subject) like '%sprz%haszysz%'
+or lower(topics.subject) like ('%sprz%kont%')
+or lower(topics.subject) like ('%sprz%koka%')
+or lower(topics.subject) like ('%sprz%amfetam%')
+or lower(topics.subject) like ('%sprz%extasy%')
+or lower(topics.subject) like ('%sprz%kradzion%');
 
 -- 6) z jakiej poczty korzystaja uzytkownicy forum torepublic? policz rozne serwery z ktorych korzystaja i posortuj je malejaco
