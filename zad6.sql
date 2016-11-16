@@ -16,9 +16,9 @@ WHERE
 -- najbardziej aktywny uzytkownik to ten ktory w danym roku mial najwieksza ilosc postow
 
 SELECT 
-    postsQuantityPerEachUserInEachYear.year,
-    postsQuantityPerEachUserInEachYear.username,
-    postsQuantityPerEachUserInEachYear.postQuantity
+    postsQuantityPerEachUserInEachYear.year as 'rok',
+    postsQuantityPerEachUserInEachYear.username as 'uzytkownik',
+    postsQuantityPerEachUserInEachYear.postQuantity as 'liczba postow'
 FROM
     (SELECT 
         YEAR(FROM_UNIXTIME(posts.posted)) AS year,
@@ -49,4 +49,30 @@ FROM
     GROUP BY results.year) AS maxPostPerUserInEachYear ON maxPostPerUserInEachYear.maxPostQuantity = postsQuantityPerEachUserInEachYear.postQuantity;
 
 
+-- 3) znajdz pieciu uzytkownikow, ktorych suma dlugosci wszystkich komentarzy jest najwieksza
+SELECT 
+    users.username as 'uzytkownik',
+    SUM(LENGTH(posts.message)) as 'dlugosc wszystkich komentarzy'
+FROM
+    users
+        INNER JOIN
+    posts ON users.id = posts.poster_id
+WHERE
+    users.username <> 'guest'
+GROUP BY users.id , users.username
+ORDER BY SUM(LENGTH(posts.message)) DESC
+LIMIT 5;
 
+-- 4) znajdz uzytkownika ktory nigdy nie napisal zadnego komentarza
+SELECT 
+    distinct users.username as 'uzytkownik'
+FROM
+    users
+        LEFT JOIN
+    posts ON users.id = posts.poster_id
+WHERE
+    posts.id is null;
+-- 5) znajdz uzytkownikow ktorzy oferowali rzeczy lub uslugi niezgodne z prawem
+
+
+-- 6) z jakiej poczty korzystaja uzytkownicy forum torepublic? policz rozne serwery z ktorych korzystaja i posortuj je malejaco
